@@ -6,10 +6,10 @@
   "scripts": {
     "dev": "ts-node-dev --respawn --transpile-only src/index.ts",
     "build": "tsc --skipLibCheck || true",
-    "start": "node dist/index.js",
+    "start": "npx prisma migrate deploy && node dist/prisma/seed.js && node dist/index.js",
     "prisma:generate": "prisma generate",
     "prisma:migrate": "prisma migrate dev",
-    "prisma:seed": "ts-node prisma/seed.ts",
+    "prisma:seed": "ts-node prisma/seed.ts", "seed": "node dist/prisma/seed.js",
     "prisma:studio": "prisma studio"
   },
   "keywords": [],
@@ -61,6 +61,11 @@
     }
   }
 }
+
+
+
+
+
 
 
 
