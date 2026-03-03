@@ -92,6 +92,45 @@ app.use(notFound);
 app.use(errorHandler);
 
 // ── Start server ──────────────────────────────────────────────────────────────
+
+// -- Auto-seed on startup ------------------------------------------------------
+async function seedDatabase() {
+  try {
+    const bcrypt = require('bcryptjs');
+    const { PackageName, FileType, Role } = require('@prisma/client');
+
+    const packages = [
+      { name: 'FREE', displayName: 'Free', description: 'Get started with basic storage', maxFolders: 5, maxNestingLevel: 2, allowedFileTypes: ['IMAGE', 'PDF'], maxFileSizeMB: 5, totalFileLimit: 20, filesPerFolder: 5 },
+      { name: 'SILVER', displayName: 'Silver', description: 'Perfect for personal use', maxFolders: 20, maxNestingLevel: 3, allowedFileTypes: ['IMAGE', 'PDF', 'AUDIO'], maxFileSizeMB: 25, totalFileLimit: 100, filesPerFolder: 20 },
+      { name: 'GOLD', displayName: 'Gold', description: 'Great for professionals', maxFolders: 50, maxNestingLevel: 5, allowedFileTypes: ['IMAGE', 'PDF', 'AUDIO', 'VIDEO'], maxFileSizeMB: 100, totalFileLimit: 500, filesPerFolder: 50 },
+      { name: 'DIAMOND', displayName: 'Diamond', description: 'Unlimited power', maxFolders: 200, maxNestingLevel: 10, allowedFileTypes: ['IMAGE', 'PDF', 'AUDIO', 'VIDEO'], maxFileSizeMB: 500, totalFileLimit: 5000, filesPerFolder: 200 },
+    ];
+
+    for (const pkg of packages) {
+      await prisma.subscriptionPackage.upsert({ where: { name: pkg.name as any }, update: pkg, create: pkg as any });
+    }
+    console.log('? Packages seeded');
+
+    const adminPassword = await bcrypt.hash('Admin@123', 12);
+    await prisma.user.upsert({
+      where: { email: 'admin@filevault.com' },
+      update: {},
+      create: { email: 'admin@filevault.com', password: adminPassword, firstName: 'System', lastName: 'Admin', role: 'ADMIN' as any, isEmailVerified: true },
+    });
+    console.log('? Admin seeded');
+
+    const userPassword = await bcrypt.hash('User@123', 12);
+    await prisma.user.upsert({
+      where: { email: 'user@filevault.com' },
+      update: {},
+      create: { email: 'user@filevault.com', password: userPassword, firstName: 'Demo', lastName: 'User', role: 'USER' as any, isEmailVerified: true },
+    });
+    console.log('? Demo user seeded');
+  } catch (err) {
+    console.error('Seed error:', err);
+  }
+}
+seedDatabase().then(() => {}).catch(console.error);
 const server = app.listen(PORT, () => {
   console.log(`FileVault API running on port ${PORT}`);
   console.log(`Upload directory: ${path.join(process.cwd(), 'uploads')}`);
@@ -178,3 +217,4 @@ cron.schedule('0 8 * * 1', async () => {
 });
 
 export default app;
+
