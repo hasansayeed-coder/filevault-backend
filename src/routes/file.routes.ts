@@ -15,7 +15,7 @@ export const fileRouter = Router();
 const uploadLimiter = rateLimit({
   windowMs: 60 * 1000,
   max: 20,
-  keyGenerator: (req: any) => req.user?.userId || req.ip,
+  keyGenerator: (req: any) => req.user?.userId || req.ip || req.socket.remoteAddress || "unknown",
   message: { success: false, message: 'Too many uploads. Max 20 per minute.' },
 });
 
