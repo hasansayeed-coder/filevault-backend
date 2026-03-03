@@ -30,6 +30,7 @@ import { getUserStorageStats } from './services/subscription.service';
 import prisma from './utils/prisma';
 
 const app = express();
+app.set('trust proxy', 1);
 const PORT = process.env.PORT || 5000;
 
 app.use(compression());
