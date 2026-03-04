@@ -14,7 +14,7 @@ export const sendPasswordResetEmail = async (
   resetToken: string,
   firstName: string
 ) => {
-  const resetUrl = `http://localhost:3000/reset-password?token=${resetToken}`;
+  const resetUrl = `${process.env.FRONTEND_URL || "http://localhost:3000"}/reset-password?token=${resetToken}`;
 
   await transporter.sendMail({
     from: process.env.SMTP_FROM,
@@ -59,7 +59,7 @@ export const sendVerificationEmail = async (
   verificationToken: string,
   firstName: string
 ) => {
-  const verifyUrl = `http://localhost:3000/verify-email?token=${verificationToken}`;
+  const verifyUrl = `${process.env.FRONTEND_URL || "http://localhost:3000"}/verify-email?token=${verificationToken}`;
 
   await transporter.sendMail({
     from: process.env.SMTP_FROM,

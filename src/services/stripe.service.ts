@@ -41,8 +41,8 @@ export const createCheckoutSession = async ({
       },
     ],
     metadata: { userId, packageId, packageName },
-    success_url: `http://localhost:3000/dashboard?success=true&package=${packageName}&session_id={CHECKOUT_SESSION_ID}`,
-    cancel_url: `http://localhost:3000/dashboard?cancelled=true`,
+    success_url: `${process.env.CLIENT_URL || process.env.FRONTEND_URL || "http://localhost:3000"}/dashboard?success=true&package=${packageName}&session_id={CHECKOUT_SESSION_ID}`,
+    cancel_url: `${process.env.CLIENT_URL || process.env.FRONTEND_URL || "http://localhost:3000"}/dashboard?cancelled=true`,
   });
 
   return session;
