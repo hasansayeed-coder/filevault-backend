@@ -19,15 +19,6 @@ A full-featured, production-ready SaaS File & Folder Management System where sub
 
 ---
 
-## 🔐 Default Credentials
-
-| Role | Email | Password |
-|------|-------|----------|
-| 👑 Admin | admin@filevault.com | Admin@123 |
-| 👤 User | user@filevault.com | User@123 | abc123@gmail.com | Ticamet250
-
-
----
 
 ## 📋 Table of Contents
 
