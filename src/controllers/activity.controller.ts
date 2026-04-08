@@ -1,7 +1,6 @@
 import { Response, NextFunction } from 'express';
 import { AuthRequest } from '../middleware/auth';
 import { AppError, successResponse } from '../utils/response';
-import { ActivityAction } from '@prisma/client';
 import prisma from '../utils/prisma';
 
 const PAGE_SIZE = 50;
